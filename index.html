@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>happy birthday · pop & fireworks</title>
-  <!-- canvas-confetti for fireworks (lightweight and pretty) -->
+  <title>🎉 Halima Sadia · birthday world 🎉</title>
+  <!-- canvas-confetti for fireworks (lightweight) -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
   <style>
     * {
@@ -19,26 +19,79 @@
       background: linear-gradient(145deg, #0b0b2b 0%, #1e1a5a 40%, #3e2c75 100%);
       font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
-      margin: 0;
       padding: 1rem;
     }
 
-    .card {
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+    /* navigation bar */
+    .navbar {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 60px;
+      padding: 0.7rem 1.5rem;
+      margin-bottom: 1.8rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5), 0 0 0 2px #ffd966 inset;
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: none;
+      font-size: 1.7rem;
+      font-weight: bold;
+      color: #fceea7;
+      text-shadow: 2px 2px 0 #7b2c6b;
+      padding: 0.3rem 1.2rem;
+      border-radius: 40px;
+      cursor: pointer;
+      transition: 0.2s;
+      letter-spacing: 1px;
+    }
+
+    .nav-btn:hover {
+      background: #f3b3d180;
+      color: #fff3b3;
+      transform: scale(1.05);
+      box-shadow: 0 0 10px #fbc0cb;
+    }
+
+    .nav-btn.active {
+      background: #f7c35c;
+      color: #2b0445;
+      text-shadow: 1px 1px 0 #ffdb8a;
+      box-shadow: 0 0 0 3px #a55ee6;
+    }
+
+    /* main card – shared container */
+    .page-card {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       border-radius: 60px 60px 40px 40px;
       box-shadow: 0 30px 50px rgba(0,0,0,0.5), 0 0 0 4px rgba(255,215,0,0.3) inset;
-      padding: 2.5rem 2rem 2rem 2rem;
-      max-width: 1000px;
+      padding: 2rem 2rem 2rem 2rem;
+      max-width: 1200px;
       width: 100%;
       text-align: center;
       border: 1px solid rgba(255,255,200,0.6);
     }
 
-    h1 {
+    /* pages (sections) – only active one is displayed */
+    .page {
+      display: none;
+    }
+
+    .page.active-page {
+      display: block;
+    }
+
+    /* ---------- celebration page styles (original) ---------- */
+    .celebration-header h1 {
       font-size: 4rem;
       font-weight: 800;
       letter-spacing: 4px;
@@ -57,7 +110,6 @@
       font-style: italic;
     }
 
-    /* Balloon playground */
     .balloon-stage {
       position: relative;
       width: 100%;
@@ -65,29 +117,26 @@
       background: rgba(255, 241, 214, 0.1);
       border-radius: 80px 80px 40px 40px;
       margin: 1rem 0 2rem 0;
-      overflow: visible;   /* show strings hanging */
+      overflow: visible;
       border: 2px dashed rgba(255,255,180,0.5);
       box-shadow: inset 0 -10px 25px rgba(0,0,0,0.6);
     }
 
-    /* ------ BALLOON CSS (pure, with knot & string) ------ */
     .balloon {
       position: absolute;
       width: 48px;
       height: 58px;
-      background-color: currentColor;   /* color controlled by js style.color */
+      background-color: currentColor;
       border-radius: 50% 50% 50% 50%;
       box-shadow: inset -5px -8px 8px rgba(0,0,0,0.2), inset 5px 5px 15px rgba(255,255,255,0.7);
       transform-origin: bottom center;
       transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
-      /* floating liftoff */
       animation: float 3s infinite alternate ease-in-out;
       will-change: transform;
       cursor: pointer;
       filter: drop-shadow(0 10px 6px rgba(0,0,0,0.2));
     }
 
-    /* balloon knot (little darker, same color) */
     .balloon::before {
       content: '';
       position: absolute;
@@ -103,7 +152,6 @@
       z-index: 2;
     }
 
-    /* string */
     .balloon::after {
       content: '';
       position: absolute;
@@ -118,13 +166,11 @@
       z-index: 1;
     }
 
-    /* floating keyframes */
     @keyframes float {
       0% { transform: translateY(0px) rotate(0deg); }
       100% { transform: translateY(-15px) rotate(1.5deg); }
     }
 
-    /* POP animation (triggered by js) */
     .balloon.pop {
       animation: none !important;
       transform: scale(0) rotate(15deg) !important;
@@ -133,7 +179,6 @@
       pointer-events: none;
     }
 
-    /* celebrate button */
     .celebrate-btn {
       background: radial-gradient(circle at 30% 10%, #f9d423, #fdaa33);
       border: none;
@@ -164,7 +209,6 @@
       filter: drop-shadow(2px 4px 4px #7f4f24);
     }
 
-    /* message after button */
     .hint {
       color: #ecd6b9;
       font-size: 1.5rem;
@@ -172,215 +216,365 @@
       margin-top: 0.5rem;
     }
 
-    footer {
+    /* ---------- photo gallery page ---------- */
+    .photos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      padding: 1.5rem;
+    }
+
+    .photo-card {
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 40px;
+      padding: 1rem 1rem 1.5rem;
+      backdrop-filter: blur(5px);
+      box-shadow: 0 10px 25px #00000070, 0 0 0 2px #fabc60 inset;
+      transition: 0.25s;
+    }
+
+    .photo-card:hover {
+      transform: scale(1.02) rotate(0.5deg);
+      box-shadow: 0 20px 30px black, 0 0 0 3px #feda7a inset;
+    }
+
+    .photo-img {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border-radius: 30px;
+      border: 3px solid #fff1b5;
+      box-shadow: 0 5px 0 #7d4e7c;
+    }
+
+    .photo-caption {
+      font-size: 1.3rem;
+      color: #ffebb5;
+      margin-top: 0.8rem;
+      font-weight: 600;
+      text-shadow: 2px 2px 0 #612c5e;
+    }
+
+    /* ---------- personalized message page ---------- */
+    .message-box {
+      background: rgba(255, 235, 200, 0.15);
+      border-radius: 70px 70px 40px 40px;
+      padding: 3rem 2.5rem;
+      margin: 1.5rem 1rem;
+      box-shadow: 0 0 30px #ffb3c6, 0 0 0 3px #ffacb5 inset;
+      backdrop-filter: blur(6px);
+    }
+
+    .greeting-name {
+      font-size: 4rem;
+      font-weight: 800;
+      color: #ffdbb5;
+      text-shadow: 3px 3px 0 #b34180, 5px 5px 0 #2f195f;
+      margin-bottom: 1.2rem;
+    }
+
+    .personal-message {
+      font-size: 2rem;
+      color: #faeece;
+      line-height: 1.6;
+      text-shadow: 2px 2px 2px #1d0e33;
+      max-width: 800px;
+      margin: 0 auto;
+      white-space: pre-line;
+    }
+
+    .personal-message span {
+      display: inline-block;
+      background: #f9c58b70;
+      padding: 0.2rem 1rem;
+      border-radius: 60px;
+      font-size: 2.2rem;
+      margin: 0.3rem;
+      backdrop-filter: blur(2px);
+    }
+
+    .message-footer {
+      margin-top: 2.5rem;
+      font-size: 2.2rem;
+      color: #fbe176;
+      text-shadow: 3px 3px 0 #7c3c6b;
+    }
+
+    footer.global-footer {
       color: #bba5d9;
-      margin-top: 1rem;
+      margin-top: 1.5rem;
       font-size: 1.2rem;
+      text-align: center;
+    }
+
+    /* responsive */
+    @media (max-width: 700px) {
+      .celebration-header h1 { font-size: 3rem; }
+      .greeting-name { font-size: 2.8rem; }
+      .personal-message { font-size: 1.5rem; }
     }
   </style>
 </head>
 <body>
-<div class="card">
-  <h1>🎂 HAPPY BIRTHDAY! 🎂</h1>
-  <div class="sub">to you · to you · to you</div>
+  <!-- navigation bar -->
+  <nav class="navbar">
+    <button class="nav-btn active" id="navCelebration">🎈 Celebration</button>
+    <button class="nav-btn" id="navPhotos">📸 Photos</button>
+    <button class="nav-btn" id="navMessage">💌 Halima's message</button>
+  </nav>
 
-  <!-- balloon stage will be filled by js -->
-  <div id="balloonContainer" class="balloon-stage"></div>
+  <!-- main card container -->
+  <div class="page-card">
+    <!-- CELEBRATION PAGE -->
+    <section id="celebrationPage" class="page active-page">
+      <div class="celebration-header">
+        <h1>🎂 HAPPY BIRTHDAY! 🎂</h1>
+        <div class="sub">to you · to you · to you</div>
+      </div>
 
-  <!-- big red celebration button -->
-  <button class="celebrate-btn" id="celebrateBtn">
-    <span>🎈</span> CELEBRATE! <span>🎉</span>
-  </button>
-  <div class="hint">⬆️ click — balloons POP & fireworks explode ⬆️</div>
-  <footer>pop balloons + confetti burst</footer>
-</div>
+      <!-- balloon stage injected by js -->
+      <div id="balloonContainer" class="balloon-stage"></div>
 
-<script>
-  (function() {
-    // ----- configuration -----
-    const BALLOON_COUNT = 18;           // number of happy balloons
-    const POP_DURATION = 400;            // ms before respawn (matches css transition + a bit)
-    const container = document.getElementById('balloonContainer');
-    const celebrateBtn = document.getElementById('celebrateBtn');
+      <button class="celebrate-btn" id="celebrateBtn">
+        <span>🎈</span> CELEBRATE! <span>🎉</span>
+      </button>
+      <div class="hint">⬆️ click — balloons POP & fireworks explode ⬆️</div>
+    </section>
 
-    let popTimeout = null;                // handle for scheduled regeneration
+    <!-- PHOTOS PAGE -->
+    <section id="photosPage" class="page">
+      <h2 style="font-size: 3.5rem; color:#fbdd9f; text-shadow: 0 3px 0 #a53684;">📸 birthday moments</h2>
+      <div class="photos-grid">
+        <div class="photo-card">
+          <img class="photo-img" src="https://picsum.photos/id/100/300/300" alt="balloons and cake">
+          <div class="photo-caption">🎈 happy balloons</div>
+        </div>
+        <div class="photo-card">
+          <img class="photo-img" src="https://picsum.photos/id/102/300/300" alt="birthday cake">
+          <div class="photo-caption">🍰 sweet cake</div>
+        </div>
+        <div class="photo-card">
+          <img class="photo-img" src="https://picsum.photos/id/104/300/300" alt="gifts">
+          <div class="photo-caption">🎁 lovely gifts</div>
+        </div>
+        <div class="photo-card">
+          <img class="photo-img" src="https://picsum.photos/id/106/300/300" alt="celebration">
+          <div class="photo-caption">✨ sparkle</div>
+        </div>
+        <div class="photo-card">
+          <img class="photo-img" src="https://picsum.photos/id/108/300/300" alt="friends">
+          <div class="photo-caption">🌟 best day</div>
+        </div>
+        <div class="photo-card">
+          <img class="photo-img" src="https://picsum.photos/id/427/300/300" alt="flowers">
+          <div class="photo-caption">🌸 beautiful you</div>
+        </div>
+      </div>
+      <p style="color:#ffe5aa; font-size:1.5rem; margin-top:1rem;">✨ more memories coming soon! ✨</p>
+    </section>
 
-    // ----- helper: random between min/max -----
-    function random(min, max) {
-      return Math.random() * (max - min) + min;
-    }
+    <!-- PERSONALIZED MESSAGE PAGE for HALIMA SADIA -->
+    <section id="messagePage" class="page">
+      <div class="message-box">
+        <div class="greeting-name">💖 Halima Sadia 💖</div>
+        <div class="personal-message">
+          <span>🥳</span> Happy Birthday to an absolutely wonderful person! <span>🥳</span><br><br>
+          May your day be filled with laughter, sweet surprises, and all the sparkle you bring to the world.<br><br>
+          You deserve oceans of happiness, mountains of cake, and skies full of fireworks.<br><br>
+          <span>🌟</span> Keep shining, beautiful soul! <span>🌟</span>
+        </div>
+        <div class="message-footer">
+          with love & birthday magic 💫
+        </div>
+      </div>
+    </section>
+  </div>
 
-    // ----- generate fresh balloons (remove old ones) -----
-    function generateBalloons() {
-      // remove any existing balloons
-      const existing = container.querySelectorAll('.balloon');
-      existing.forEach(b => b.remove());
+  <footer class="global-footer">pop balloons + confetti burst · for Halima Sadia ❤️</footer>
 
-      for (let i = 0; i < BALLOON_COUNT; i++) {
-        const balloon = document.createElement('div');
-        balloon.className = 'balloon';
+  <script>
+    (function() {
+      // ---------- PAGE NAVIGATION ----------
+      const navCeleb = document.getElementById('navCelebration');
+      const navPhotos = document.getElementById('navPhotos');
+      const navMessage = document.getElementById('navMessage');
+      const pageCeleb = document.getElementById('celebrationPage');
+      const pagePhotos = document.getElementById('photosPage');
+      const pageMessage = document.getElementById('messagePage');
+      const navButtons = [navCeleb, navPhotos, navMessage];
 
-        // random bright HSL color (saturation 85–100%, lightness 55–75%)
-        const hue = random(0, 360);
-        const sat = random(75, 100);
-        const light = random(55, 75);
-        const color = `hsl(${hue}, ${sat}%, ${light}%)`;
-
-        // set color -> currentColor fills balloon + knot
-        balloon.style.color = color;
-
-        // random left position (3% .. 96% to avoid edges)
-        const leftPercent = random(3, 96);
-        balloon.style.left = leftPercent + '%';
-
-        // random bottom position (so they float at different heights)
-        // range 30px .. 280px (container height 380px, keep string visible)
-        const bottomPx = random(30, 280);
-        balloon.style.bottom = bottomPx + 'px';
-
-        // random slight scale variation (some a bit bigger/smaller)
-        const scaleVar = random(0.85, 1.25);
-        balloon.style.transform = `scale(${scaleVar})`;
-        // keep the floating animation but vary delay
-        const animDelay = random(0, 2);
-        balloon.style.animationDelay = animDelay + 's';
-
-        // store random scale for pop (if needed, but not required)
-        container.appendChild(balloon);
+      function setActivePage(activeId) {
+        // hide all pages
+        pageCeleb.classList.remove('active-page');
+        pagePhotos.classList.remove('active-page');
+        pageMessage.classList.remove('active-page');
+        // remove active class from all nav buttons
+        navButtons.forEach(btn => btn.classList.remove('active'));
+        // show selected
+        if (activeId === 'celebration') {
+          pageCeleb.classList.add('active-page');
+          navCeleb.classList.add('active');
+        } else if (activeId === 'photos') {
+          pagePhotos.classList.add('active-page');
+          navPhotos.classList.add('active');
+        } else if (activeId === 'message') {
+          pageMessage.classList.add('active-page');
+          navMessage.classList.add('active');
+        }
       }
-    }
 
-    // ----- pop all existing balloons (add pop class) and schedule respawn -----
-    function popBalloons() {
-      const balloons = document.querySelectorAll('.balloon');
-      if (balloons.length === 0) {
-        // in case no balloons (rare), just generate new and maybe pop later? but we generate now.
-        generateBalloons();
-        // after generating, pop again? to be safe we recall after tiny delay?
-        // simpler: just return and let next click handle. but we want pop always on click.
-        // So if no balloons, generate and then apply pop after a tick.
+      navCeleb.addEventListener('click', () => setActivePage('celebration'));
+      navPhotos.addEventListener('click', () => setActivePage('photos'));
+      navMessage.addEventListener('click', () => setActivePage('message'));
+
+      // ---------- BALLOON & FIREWORKS (celebration only) ----------
+      const container = document.getElementById('balloonContainer');
+      const celebrateBtn = document.getElementById('celebrateBtn');
+
+      // configuration
+      const BALLOON_COUNT = 18;
+      const POP_DURATION = 400;
+      let popTimeout = null;
+
+      function random(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      function generateBalloons() {
+        const existing = container.querySelectorAll('.balloon');
+        existing.forEach(b => b.remove());
+
+        for (let i = 0; i < BALLOON_COUNT; i++) {
+          const balloon = document.createElement('div');
+          balloon.className = 'balloon';
+
+          const hue = random(0, 360);
+          const sat = random(75, 100);
+          const light = random(55, 75);
+          const color = `hsl(${hue}, ${sat}%, ${light}%)`;
+          balloon.style.color = color;
+
+          const leftPercent = random(3, 96);
+          balloon.style.left = leftPercent + '%';
+          const bottomPx = random(30, 280);
+          balloon.style.bottom = bottomPx + 'px';
+          const scaleVar = random(0.85, 1.25);
+          balloon.style.transform = `scale(${scaleVar})`;
+          const animDelay = random(0, 2);
+          balloon.style.animationDelay = animDelay + 's';
+
+          container.appendChild(balloon);
+        }
+      }
+
+      function popBalloons() {
+        const balloons = document.querySelectorAll('.balloon');
+        if (balloons.length === 0) {
+          generateBalloons();
+          setTimeout(() => {
+            const newBalloons = document.querySelectorAll('.balloon');
+            newBalloons.forEach(b => b.classList.add('pop'));
+          }, 10);
+        } else {
+          balloons.forEach(b => b.classList.add('pop'));
+        }
+
+        if (popTimeout) {
+          clearTimeout(popTimeout);
+          popTimeout = null;
+        }
+
+        popTimeout = setTimeout(() => {
+          const allBalloons = container.querySelectorAll('.balloon');
+          allBalloons.forEach(b => b.remove());
+          generateBalloons();
+          popTimeout = null;
+        }, POP_DURATION);
+      }
+
+      function triggerFireworks() {
+        confetti({
+          particleCount: 180,
+          spread: 80,
+          origin: { y: 0.6 },
+          startVelocity: 25,
+          colors: ['#ffd166', '#ffb347', '#ff6f61', '#9b5de5', '#f15bb5', '#00bbf9']
+        });
+
         setTimeout(() => {
-          const newBalloons = document.querySelectorAll('.balloon');
-          newBalloons.forEach(b => b.classList.add('pop'));
-        }, 10);
-      } else {
-        // add pop class to all existing balloons
-        balloons.forEach(b => b.classList.add('pop'));
+          confetti({
+            particleCount: 100,
+            angle: 60,
+            spread: 55,
+            origin: { x: 0.2, y: 0.5 },
+            colors: ['#fee440', '#f95738', '#d81159', '#218380']
+          });
+        }, 120);
+
+        setTimeout(() => {
+          confetti({
+            particleCount: 120,
+            angle: 120,
+            spread: 70,
+            origin: { x: 0.8, y: 0.5 },
+            colors: ['#f94144', '#f8961e', '#90be6d', '#577590']
+          });
+        }, 200);
+
+        setTimeout(() => {
+          confetti({
+            particleCount: 70,
+            spread: 110,
+            origin: { y: 0.3, x: 0.4 },
+            startVelocity: 35,
+            colors: ['#f9c74f', '#f9844a', '#d00000', '#ffba08']
+          });
+          confetti({
+            particleCount: 70,
+            spread: 110,
+            origin: { y: 0.3, x: 0.6 },
+            startVelocity: 35,
+            colors: ['#ef476f', '#ffd166', '#06d6a0', '#118ab2']
+          });
+        }, 320);
+
+        setTimeout(() => {
+          confetti({
+            particleCount: 200,
+            spread: 130,
+            origin: { y: 0.4 },
+            startVelocity: 20,
+            colors: ['#ffbc69', '#f08080', '#c77dff', '#b8f2e6']
+          });
+        }, 450);
       }
 
-      // clear any scheduled regeneration (to avoid double spawn)
-      if (popTimeout) {
-        clearTimeout(popTimeout);
-        popTimeout = null;
+      function celebrate() {
+        popBalloons();
+        triggerFireworks();
       }
 
-      // schedule regeneration (remove popped & create new balloons)
-      popTimeout = setTimeout(() => {
-        // remove all balloon elements (they have .pop class now, but just remove all)
-        const allBalloons = container.querySelectorAll('.balloon');
-        allBalloons.forEach(b => b.remove());
-
-        // create fresh unpopped balloons
+      // initial balloons
+      window.addEventListener('load', () => {
         generateBalloons();
-
-        popTimeout = null;
-      }, POP_DURATION);
-    }
-
-    // ----- FIREWORKS using canvas-confetti (multiple bursts) -----
-    function triggerFireworks() {
-      // first burst – center
-      confetti({
-        particleCount: 180,
-        spread: 80,
-        origin: { y: 0.6 },
-        startVelocity: 25,
-        colors: ['#ffd166', '#ffb347', '#ff6f61', '#9b5de5', '#f15bb5', '#00bbf9']
       });
 
-      // left side burst after 120ms
-      setTimeout(() => {
-        confetti({
-          particleCount: 100,
-          angle: 60,
-          spread: 55,
-          origin: { x: 0.2, y: 0.5 },
-          colors: ['#fee440', '#f95738', '#d81159', '#218380']
-        });
-      }, 120);
+      celebrateBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        // only trigger if celebration page is active (to avoid confusion, but button hidden on other pages anyway)
+        celebrate();
+        if (navigator.vibrate) navigator.vibrate(30);
+      });
 
-      // right side burst after 200ms
-      setTimeout(() => {
-        confetti({
-          particleCount: 120,
-          angle: 120,
-          spread: 70,
-          origin: { x: 0.8, y: 0.5 },
-          colors: ['#f94144', '#f8961e', '#90be6d', '#577590']
-        });
-      }, 200);
+      // optional double click on stage
+      container.addEventListener('dblclick', () => {
+        // only if celebration page active? doesn't matter, balloons only exist there
+        celebrate();
+      });
 
-      // random high bursts (like fireworks)
-      setTimeout(() => {
-        confetti({
-          particleCount: 70,
-          spread: 110,
-          origin: { y: 0.3, x: 0.4 },
-          startVelocity: 35,
-          colors: ['#f9c74f', '#f9844a', '#d00000', '#ffba08']
-        });
-        confetti({
-          particleCount: 70,
-          spread: 110,
-          origin: { y: 0.3, x: 0.6 },
-          startVelocity: 35,
-          colors: ['#ef476f', '#ffd166', '#06d6a0', '#118ab2']
-        });
-      }, 320);
+      // if user navigates away and comes back, balloons still exist, fine.
 
-      // final cascade
-      setTimeout(() => {
-        confetti({
-          particleCount: 200,
-          spread: 130,
-          origin: { y: 0.4 },
-          startVelocity: 20,
-          colors: ['#ffbc69', '#f08080', '#c77dff', '#b8f2e6']
-        });
-      }, 450);
-    }
-
-    // ----- main celebration handler (pop + fireworks) -----
-    function celebrate() {
-      popBalloons();            // add pop class & schedule respawn
-      triggerFireworks();       // multiple confetti explosions
-    }
-
-    // ----- initial balloons on page load -----
-    window.addEventListener('load', () => {
-      generateBalloons();
-
-      // extra safety: ensure container has balloons
-    });
-
-    // ----- button click listener -----
-    celebrateBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      celebrate();
-
-      // tiny haptic feedback (vibrate if supported) – just for fun
-      if (navigator.vibrate) navigator.vibrate(30);
-    });
-
-    // optional: double‑click on stage also pops (just for extra fun)
-    container.addEventListener('dblclick', () => {
-      celebrate();
-    });
-
-    // also ensure that if any balloon is hovered, pointer shows clickable feel
-    // but not necessary
-
-  })();
-</script>
+    })();
+  </script>
 </body>
 </html>
